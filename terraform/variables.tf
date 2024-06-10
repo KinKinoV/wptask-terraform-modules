@@ -1,3 +1,36 @@
+#############################################################################
+#                             REQUIRED VARIABLES                            #
+#############################################################################
+
+variable "public_key_bastion" {
+  description = "Public Key for Bastion instance in public subnet"
+  type = string
+}
+
+variable "public_key_wp" {
+  description = "Public Key for wordpress instances in private subnets"
+  type = string
+}
+
+variable "allowed_bastion_ips" {
+  description = "List of IPs that are allowed to SSH into bastion host"
+  type = list(string)
+}
+
+variable "rds_monitoring_role_arn" {
+  description = "RDS monitoring role ARN if it already exists in AWS IAM"
+  type = string
+}
+
+variable "zone_name" {
+  description = "FQDN to use with Route53 hosted zone"
+  type = string
+}
+
+#######################################################################################
+#                                  Other variables                                    #
+#######################################################################################
+
 variable "environment" {
   description = "Environment name for this deployment"
   type = string
@@ -27,12 +60,6 @@ variable "vpc_azs" {
   }
 }
 
-# Required!
-variable "zone_name" {
-  description = "FQDN to use with Route53 hosted zone"
-  type = string
-}
-
 variable "bucket_name" {
   description = "Name for the bucket that will host WordPress static files"
   type = string
@@ -43,30 +70,6 @@ variable "instance_type" {
   description = "Instance type to use for Autoscalling launch template"
   type = string
   default = "t3.micro"
-}
-
-# Required!
-variable "public_key_bastion" {
-  description = "Public Key for Bastion instance in public subnet"
-  type = string
-}
-
-# Required!
-variable "public_key_wp" {
-  description = "Public Key for wordpress instances in private subnets"
-  type = string
-}
-
-# Required!
-variable "allowed_bastion_ips" {
-  description = "List of IPs that are allowed to SSH into bastion host"
-  type = list(string)
-}
-
-# Required!
-variable "rds_monitoring_role_arn" {
-  description = "RDS monitoring role ARN if it already exists in AWS IAM"
-  type = string
 }
 
 variable "create_records" {
