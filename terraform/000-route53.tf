@@ -28,8 +28,7 @@ module "route53-records" {
 
   zone_name = var.zone_name
 
- # Encoded in json for Terragrunt
-  records_jsonencoded = jsonencode([
+  records = [
     {
       name  = "wordpress"
       type  = "A"
@@ -38,7 +37,19 @@ module "route53-records" {
         zone_id = module.cloudfront.cloudfront_distribution_hosted_zone_id
       }
     }
-  ])
+  ]
+
+ # Encoded in json for Terragrunt
+  # records_jsonencoded = [
+  #   {
+  #     name  = "wordpress"
+  #     type  = "A"
+  #     alias = {
+  #       name    = module.cloudfront.cloudfront_distribution_domain_name
+  #       zone_id = module.cloudfront.cloudfront_distribution_hosted_zone_id
+  #     }
+  #   }
+  # ]
 
   depends_on = [ module.hosted_zone, module.cloudfront ]
 }
