@@ -12,11 +12,6 @@ terraform apply -target="module.hosted_zone" --var-file=/path/to/yours.tfvars
 ```bash
 terraform apply --var-file=/path/to/yours.tfvars
 ```
-5. After infrastructure finishes creating you should use 
-```bash
-terraform apply -target="module.route53-records" -var="create_records=true"
-```
-This will create record in Route53 hosted zone to your cloudfront from which common users will connect to WordPress site.
 
 ## Destroying infrastructure
 
@@ -39,5 +34,4 @@ terraform destroy --var-file=/path/to/yours.tfvars
 | cloudfront     | antonbabenko | [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/cloudfront/aws/3.4.0)      |  3.4.0  |
 | alb            | antonbabenko | [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/alb/aws/9.9.0)             |  9.9.0  |
 | route53        | antonbabenko | [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/route53/aws/2.11.1)        |  2.11.1 |
-| kms            | antonbabenko | [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/kms/aws/3.0.0)             |  3.0.0  |
 | acm            | antonbabenko | [Terraform Registry](https://registry.terraform.io/modules/terraform-aws-modules/kms/aws/4.5.0)             |  4.5.0  |
