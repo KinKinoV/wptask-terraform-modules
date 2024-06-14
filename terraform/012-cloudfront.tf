@@ -77,10 +77,10 @@ module "cloudfront" {
   default_cache_behavior = {
     target_origin_id       = "wordpress-ALB"
     viewer_protocol_policy = "redirect-to-https"
-    
+
     # Setting Cache Policy and Origin Request policy so that CloudFront is able to cache ALB origin
-    cache_policy_name            = "Managed-CachingOptimized"
-    origin_request_policy_name   = "Managed-AllViewer"
+    cache_policy_name          = "Managed-CachingOptimized"
+    origin_request_policy_name = "Managed-AllViewer"
 
     # Allowing all methods so that WordPress works correctly 
     allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
@@ -89,7 +89,7 @@ module "cloudfront" {
 
     # Due to using Cache Policy forwarded values must be disabled
     use_forwarded_values = false
-    query_string    = false
+    query_string         = false
   }
 
   ordered_cache_behavior = [

@@ -17,11 +17,11 @@ module "alb" {
       cidr_ipv4   = "0.0.0.0/0"
     }
     all_https = {
-      from_port = 443
-      to_port = 443
+      from_port   = 443
+      to_port     = 443
       ip_protocol = "tcp"
       description = "HTTPS web traffic"
-      cidr_ipv4 = "0.0.0.0/0"
+      cidr_ipv4   = "0.0.0.0/0"
     }
   }
   security_group_egress_rules = {

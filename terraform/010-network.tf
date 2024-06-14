@@ -58,10 +58,10 @@ module "wordpress-sg" {
   ingress_with_cidr_blocks = [
     # Allow SSH connection from Bastion instance
     {
-      rule = "ssh-tcp"
+      rule        = "ssh-tcp"
       cidr_blocks = "${module.bastion.private_ip}/32"
     },
-   ]
+  ]
 
   # Allows HTTP/HTTPS traffic from ALB
   ingress_with_source_security_group_id = [

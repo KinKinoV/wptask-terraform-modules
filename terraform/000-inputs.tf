@@ -29,7 +29,7 @@ variable "zone_name" {
 
 variable "db_password" {
   description = "Password for MySQL database"
-  type = string
+  type        = string
 }
 
 #######################################################################################
