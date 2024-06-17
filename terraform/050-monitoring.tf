@@ -1,1 +1,0 @@
-# All resources for CloudWatch (metrics streams, alarms, dashboards)
