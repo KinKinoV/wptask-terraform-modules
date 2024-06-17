@@ -61,6 +61,7 @@ variable "bucket_name" {
 variable "db_password" {
   description = "Password for WordPress database in MySQL"
   type = string
+  sensitive = true
 }
 
 variable "rds_monitoring_role_arn" {
@@ -73,6 +74,7 @@ variable "rds_monitoring_role_arn" {
 #                                      Bastion                                        #
 #######################################################################################
 
+# Required
 variable "public_key_bastion" {
   description = "Public Key for Bastion instance in public subnet"
   type        = string
