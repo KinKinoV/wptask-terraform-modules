@@ -32,8 +32,8 @@ module "my-sql-rds" {
 
   performance_insights_enabled          = true
   performance_insights_retention_period = 7
-  create_monitoring_role                = var.rds_monitoring_role_arn ? false : true
-  monitoring_role_arn                   = var.rds_monitoring_role_arn ? var.rds_monitoring_role_arn : null
+  create_monitoring_role                = true
+  monitoring_role_name                  = "${var.environment}-mysql-rds-monitoring-role"
   monitoring_interval                   = 60
 
   tags = local.tags

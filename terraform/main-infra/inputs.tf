@@ -64,12 +64,6 @@ variable "db_password" {
   sensitive = true
 }
 
-variable "rds_monitoring_role_arn" {
-  description = "Enter RDS monitoring role ARN if it already exists in AWS IAM"
-  type        = string
-  default     = null
-}
-
 #######################################################################################
 #                                      Bastion                                        #
 #######################################################################################
