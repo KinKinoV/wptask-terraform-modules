@@ -2,23 +2,27 @@
 
 ## Creation
 To correctly deploy infrastrucuture you need to follow specific order in applying resources:
-1. Create `.tfvars` file with all required variables 
-2. Create Route53 Hosted Zone using 
-```bash
-terraform apply -target="module.hosted_zone" --var-file=/path/to/yours.tfvars
-```
-3. After hosted zone was successfully created you should go to your domain registar (namecheap, nic, godaddy, etc.) and change nameservers to the ones provided in hosted zone (also should be visible in outputs)
-4. Now you can apply rest of the infrastructure using 
+
+1. Apply [hosted-zone](/terraform/hosted-zone/) module
+2. Prepare your own or use already pre-built AMI image for hosting WordPress application
+3. Apply [main-infra](/terraform/main-infra/) module, passing all required outputs from `hosted-zone` module
+4. Apply [wordpress-instances](/terraform/wordpress-instances/) module, passing all required outputs from `main-infra` module (don't forget to use WordPress AMI in `wordpress_ami` input)
+
+To apply infrastructure you can use next command in corresponding module directory:
 ```bash
 terraform apply --var-file=/path/to/yours.tfvars
 ```
 
 ## Destroying infrastructure
 
-To destroy all of the created infrastructure use:
+To destroy all of the created infrastructure, you must apply this command:
 ```bash
 terraform destroy --var-file=/path/to/yours.tfvars
 ```
+In each module corresponding directory in reverse order:
+1. `wordpress-instances`
+2. `main-infra`
+3. `hosted-zone`
 
 # Used Terraform modules
 
