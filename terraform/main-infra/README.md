@@ -24,7 +24,6 @@ All these resources are configured to support hosting WordPress application in E
 | health_check_target     | `string`        | no       | "/index.php"                               | Path through which Target Group will check WP instances' health                    |
 | bucket_name             | `string`        | no       | "wp-static-bucket"                         | Name for the S3 static bucket                                                      |
 | db_password             | `string`        | yes      | -                                          | Password for WordPress database in MySQL                                           |
-| rds_monitoring_role_arn | `string`        | no       | null                                       | Enter RDS monitoring role ARN if it already exists in AWS IAM                      |
 | public_key_bastion      | `string`        | yes      | -                                          | Public Key for Bastion instance in public subnet                                   |
 | environment             | `string`        | no       | "dev"                                      | Environment name for this deployment                                               |
 | region                  | `string`        | no       | "us-east-1"                                | Region where infrastructure should be deployed                                     |
