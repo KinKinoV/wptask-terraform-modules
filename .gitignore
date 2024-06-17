@@ -32,3 +32,9 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+# provider.tf, because this repository is collection of modules that must be used with terragrunt
+**/provider.tf
+
+# ignoring .lock.hcl files
+**/*.lock.hcl
