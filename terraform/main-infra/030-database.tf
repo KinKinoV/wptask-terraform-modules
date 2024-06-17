@@ -22,8 +22,7 @@ module "my-sql-rds" {
   db_subnet_group_name   = module.vpc.database_subnet_group
   vpc_security_group_ids = [module.db-sg.security_group_id]
 
-  skip_final_snapshot = false
-  snapshot_identifier = "${var.environment}-wpdb-snap"
+  skip_final_snapshot = true
   deletion_protection = false
 
   backup_retention_period = 7
