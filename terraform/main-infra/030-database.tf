@@ -24,6 +24,13 @@ module "my-sql-rds" {
 
   skip_final_snapshot = true
   deletion_protection = false
+  
+  parameters = [
+    {
+      name = "skip_name_resolve"
+      value = 1
+    }
+  ]
 
   backup_retention_period = 7
   backup_window           = "03:00-04:00"
