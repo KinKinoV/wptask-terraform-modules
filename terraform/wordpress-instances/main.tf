@@ -12,6 +12,11 @@ locals {
     Environment = var.environment
     Terraform   = true
   }
+
+  user_data = <<EOF
+#!/bin/bash
+sudo mount -t efs -o tls ${var.efs_id}:/ /var/www/html/
+  EOF
 }
 
 resource "aws_key_pair" "wp-instances" {
@@ -50,14 +55,10 @@ module "wordpress-hosts" {
   }
 
   # Launch Tempalte
-  image_id      = var.wordpress_ami  # data.aws_ami.amazon_linux.id # CHANGE TO WORDPRESS AMI
+  image_id      = var.wordpress_ami
   instance_type = var.instance_type
   key_name      = aws_key_pair.wp-instances.key_name
-  user_data     = base64encode(<<EOF
-  #!/bin/bash
-  sudo mount -t efs -o tls ${var.efs_id}:/ /var/www/html
-  EOF
-  )
+  user_data     = base64encode(local.user_data)
   instance_market_options = {
     market_type = "spot"
   }
@@ -66,7 +67,7 @@ module "wordpress-hosts" {
       delete_on_termination = true
       description           = "eth0"
       device_index          = 0
-      security_groups       = var.wp_sg_ids  # ["${module.wordpress-sg.security_group_id}"]
+      security_groups       = var.wp_sg_ids
       delete_on_termination = true
     },
   ]
