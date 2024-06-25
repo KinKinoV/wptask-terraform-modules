@@ -78,7 +78,7 @@ module "s3-static" {
   force_destroy = true
 
   attach_policy = true
-  policy        = data.aws_iam_policy_document.w3tc-access
+  policy        = data.aws_iam_policy_document.w3tc-access.json
 
   tags = local.tags
 }
