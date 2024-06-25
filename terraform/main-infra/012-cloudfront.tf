@@ -31,10 +31,15 @@ module "cloudfront" {
   retain_on_delete    = false
   wait_for_deployment = false
 
-  # Creating Origin Access Identity so that CloudFront is able to serve static from bucket
-  create_origin_access_identity = true
-  origin_access_identities = {
-    s3_wordpress_static = "${var.environment} CloudFront for WordpPress can access"
+  # Creating Origin Access Control so that CloudFront is able to serve static from bucket
+  create_origin_access_control = true
+  origin_access_control = {
+    s3_wordpress_static = {
+      description      = "CloudFront access to S3"
+      origin_type      = "s3"
+      signing_behavior = "always"
+      signing_protocol = "sigv4"
+    }
   }
 
   # Saving logs to separate s3 bucket
@@ -55,10 +60,10 @@ module "cloudfront" {
     }
 
     wordpress-static = {
-      domain_name = module.s3-static.s3_bucket_bucket_domain_name
-      s3_origin_config = {
-        origin_access_identity = "s3_wordpress_static"
-      }
+      # Declaring domain in this way, because we need to create bukcet policy with
+      # this CloudFront ARN
+      domain_name = "${var.environment}-${var.bucket_name}.s3.${var.region}.amazonaws.com"
+      origin_access_control = "s3_wordpress_static"
     }
   }
 
@@ -66,30 +71,114 @@ module "cloudfront" {
     target_origin_id       = "wordpress-ALB"
     viewer_protocol_policy = "redirect-to-https"
 
-    # Setting Cache Policy and Origin Request policy so that CloudFront is able to cache ALB origin
-    cache_policy_name          = "Managed-CachingOptimized"
-    origin_request_policy_name = "Managed-AllViewer"
-
     # Allowing all methods so that WordPress works correctly 
     allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
-    cached_methods  = ["GET", "HEAD"]
+    cached_methods  = ["GET", "HEAD", "OPTIONS"]
     compress        = true
 
-    # Due to using Cache Policy forwarded values must be disabled
-    use_forwarded_values = false
-    query_string         = false
+    use_forwarded_values = true
+
+    headers = [
+      "Origin", 
+      "Host", 
+      "CloudFront-Is-Tablet-Viewer", 
+      "CloudFront-Is-Mobile-Viewer", 
+      "CloudFront-Is-Desktop-Viewer",
+      "CloudFront-Forwarded-Proto"
+      ]
+    query_string              = true
+    cookies_forward           = true
+    cookies_whitelisted_names = [ "comment_*", "wordpress_*", "wp-settings-*" ]
+
+    min_ttl     = 0
+    default_ttl = 300
+    max_ttl     = 31536000
   }
 
   ordered_cache_behavior = [
+    # No cahing for admin and login pages
     {
-      path_pattern           = "/static/*"
+      path_pattern           = "/wp-admin/*"
+      target_origin_id       = "wordpress-ALB"
+      viewer_protocol_policy = "redirect-to-https"
+      compress               = true
+
+      allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+      cached_methods  = ["GET", "HEAD", "OPTIONS"]
+
+      use_forwarded_values = true
+
+      headers = [
+        "Origin", 
+        "Host", 
+        "CloudFront-Is-Tablet-Viewer", 
+        "CloudFront-Is-Mobile-Viewer", 
+        "CloudFront-Is-Desktop-Viewer",
+        "CloudFront-Forwarded-Proto"
+        ]
+      query_string = true # Forward ALL
+      cookies_forward = true # Forward ALL
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+    },
+    {
+      path_pattern           = "/wp-login.php"
+      target_origin_id       = "wordpress-ALB"
+      viewer_protocol_policy = "redirect-to-https"
+      compress               = true
+
+      allowed_methods = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+      cached_methods  = ["GET", "HEAD", "OPTIONS"]
+
+      use_forwarded_values = true
+
+      headers = [
+        "Origin", 
+        "Host", 
+        "CloudFront-Is-Tablet-Viewer", 
+        "CloudFront-Is-Mobile-Viewer", 
+        "CloudFront-Is-Desktop-Viewer",
+        "CloudFront-Forwarded-Proto"
+        ]
+      query_string = true # Forward ALL
+      cookies_forward = true # Forward ALL
+
+      min_ttl     = 0
+      default_ttl = 0
+      max_ttl     = 0
+    },
+    # WordPress assets
+    {
+      path_pattern           = "/wp-includes/*"
       target_origin_id       = "wordpress-static"
       viewer_protocol_policy = "redirect-to-https"
 
       allowed_methods = ["GET", "HEAD", "OPTIONS"]
-      cached_methods  = ["GET", "HEAD"]
+      cached_methods  = ["GET", "HEAD", "OPTIONS"]
       compress        = true
-      query_string    = true
+      
+      use_forwarded_values = false
+
+      cache_policy_name            = "Managed-CachingOptimized"
+      origin_request_policy_name   = "Managed-CORS-S3Origin"
+      response_headers_policy_name = "Managed-SimpleCORS"
+    },
+    {
+      path_pattern           = "/wp-content/*"
+      target_origin_id       = "wordpress-static"
+      viewer_protocol_policy = "redirect-to-https"
+
+      allowed_methods = ["GET", "HEAD", "OPTIONS"]
+      cached_methods  = ["GET", "HEAD", "OPTIONS"]
+      compress        = true
+      
+      use_forwarded_values = false
+
+      cache_policy_name            = "Managed-CachingOptimized"
+      origin_request_policy_name   = "Managed-CORS-S3Origin"
+      response_headers_policy_name = "Managed-SimpleCORS"
     }
   ]
 
@@ -100,5 +189,5 @@ module "cloudfront" {
 
   tags = local.tags
 
-  depends_on = [module.s3-static, module.alb, module.acm]
+  depends_on = [module.alb, module.acm]
 }
