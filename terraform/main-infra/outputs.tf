@@ -32,6 +32,11 @@ output "bastion_dns_name" {
   value       = module.bastion.public_dns
 }
 
+output "cloudfront_dns_id" {
+  description = "First part of the cloudfront DNS name"
+  value = split(".", module.cloudfront.cloudfront_distribution_domain_name)[0]
+}
+
 ###################################################################################
 #                                       IAM                                       #
 ###################################################################################
@@ -44,6 +49,15 @@ output "w3tc_user_access_key_id" {
 output "w3tc_user_access_key_secret" {
   description = "Secret of the Access Key for W3TC WordPress plugin"
   value       = module.w3tc-user.iam_access_key_secret
+}
+
+###################################################################################
+#                                    Storage                                      #
+###################################################################################
+
+output "bucket_name" {
+  description = "Name of the S3 bukcet that stores static assets"
+  value       = module.s3-static.s3_bucket_id
 }
 
 ###################################################################################
