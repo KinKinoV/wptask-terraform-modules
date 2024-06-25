@@ -27,8 +27,9 @@ module "my-sql-rds" {
 
   parameters = [
     {
-      name  = "skip_name_resolve"
-      value = 1
+      name         = "skip_name_resolve"
+      value        = 1
+      apply_method = "pending-reboot"
     }
   ]
 
