@@ -44,11 +44,13 @@ output "cloudfront_dns_id" {
 output "w3tc_user_access_key_id" {
   description = "ID of the Access Key for W3TC WordPress plugin"
   value       = module.w3tc-user.iam_access_key_id
+  sensitive   = true
 }
 
 output "w3tc_user_access_key_secret" {
   description = "Secret of the Access Key for W3TC WordPress plugin"
   value       = module.w3tc-user.iam_access_key_secret
+  sensitive   = true
 }
 
 ###################################################################################
