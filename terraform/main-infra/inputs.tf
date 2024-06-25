@@ -68,6 +68,12 @@ variable "db_password" {
 #                                      Bastion                                        #
 #######################################################################################
 
+# REQUIRED
+variable "wordpress_ami" {
+  description = "ID of the AMI ready to be used in Launch Template for Autoscaling group"
+  type = string
+}
+
 # Required
 variable "public_key_bastion" {
   description = "Public Key for Bastion instance in public subnet"
