@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "w3tc-access" {
     condition {
       test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values   = ["${module.cloudfront.arn}"]
+      values   = ["${module.cloudfront.cloudfront_distribution_arn}"]
     }
   }
 }
