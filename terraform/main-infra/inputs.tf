@@ -34,13 +34,13 @@ variable "zone_name" {
 # REQUIRED 
 variable "hosted_zone_id" {
   description = "ID of the Route53 hosted zone ('zone_id' output from hosted-zone module)"
-  type = string
+  type        = string
 }
 
 variable "health_check_target" {
   description = "Path through which Target Group will check WP instances' health"
-  type = string
-  default = "/index.php"
+  type        = string
+  default     = "/index.php"
 }
 
 #######################################################################################
@@ -49,8 +49,8 @@ variable "health_check_target" {
 
 variable "bucket_name" {
   description = "Name for the S3 static bucket"
-  type = string
-  default = "wp-static-bucket"
+  type        = string
+  default     = "wp-static-bucket"
 }
 
 #######################################################################################
@@ -60,8 +60,8 @@ variable "bucket_name" {
 # REQUIRED
 variable "db_password" {
   description = "Password for WordPress database in MySQL"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }
 
 #######################################################################################
@@ -71,7 +71,7 @@ variable "db_password" {
 # REQUIRED
 variable "wordpress_ami" {
   description = "ID of the AMI ready to be used in Launch Template for Autoscaling group"
-  type = string
+  type        = string
 }
 
 # Required

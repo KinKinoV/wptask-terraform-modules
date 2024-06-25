@@ -62,7 +62,7 @@ module "cloudfront" {
     wordpress-static = {
       # Declaring domain in this way, because we need to create bukcet policy with
       # this CloudFront ARN
-      domain_name = "${var.environment}-${var.bucket_name}.s3.${var.region}.amazonaws.com"
+      domain_name           = "${var.environment}-${var.bucket_name}.s3.${var.region}.amazonaws.com"
       origin_access_control = "s3_wordpress_static"
     }
   }
@@ -79,16 +79,16 @@ module "cloudfront" {
     use_forwarded_values = true
 
     headers = [
-      "Origin", 
-      "Host", 
-      "CloudFront-Is-Tablet-Viewer", 
-      "CloudFront-Is-Mobile-Viewer", 
+      "Origin",
+      "Host",
+      "CloudFront-Is-Tablet-Viewer",
+      "CloudFront-Is-Mobile-Viewer",
       "CloudFront-Is-Desktop-Viewer",
       "CloudFront-Forwarded-Proto"
-      ]
+    ]
     query_string              = true
     cookies_forward           = true
-    cookies_whitelisted_names = [ "comment_*", "wordpress_*", "wp-settings-*" ]
+    cookies_whitelisted_names = ["comment_*", "wordpress_*", "wp-settings-*"]
 
     min_ttl     = 0
     default_ttl = 300
@@ -109,14 +109,14 @@ module "cloudfront" {
       use_forwarded_values = true
 
       headers = [
-        "Origin", 
-        "Host", 
-        "CloudFront-Is-Tablet-Viewer", 
-        "CloudFront-Is-Mobile-Viewer", 
+        "Origin",
+        "Host",
+        "CloudFront-Is-Tablet-Viewer",
+        "CloudFront-Is-Mobile-Viewer",
         "CloudFront-Is-Desktop-Viewer",
         "CloudFront-Forwarded-Proto"
-        ]
-      query_string = true # Forward ALL
+      ]
+      query_string    = true # Forward ALL
       cookies_forward = true # Forward ALL
 
       min_ttl     = 0
@@ -135,14 +135,14 @@ module "cloudfront" {
       use_forwarded_values = true
 
       headers = [
-        "Origin", 
-        "Host", 
-        "CloudFront-Is-Tablet-Viewer", 
-        "CloudFront-Is-Mobile-Viewer", 
+        "Origin",
+        "Host",
+        "CloudFront-Is-Tablet-Viewer",
+        "CloudFront-Is-Mobile-Viewer",
         "CloudFront-Is-Desktop-Viewer",
         "CloudFront-Forwarded-Proto"
-        ]
-      query_string = true # Forward ALL
+      ]
+      query_string    = true # Forward ALL
       cookies_forward = true # Forward ALL
 
       min_ttl     = 0
@@ -158,7 +158,7 @@ module "cloudfront" {
       allowed_methods = ["GET", "HEAD", "OPTIONS"]
       cached_methods  = ["GET", "HEAD", "OPTIONS"]
       compress        = true
-      
+
       use_forwarded_values = false
 
       cache_policy_name            = "Managed-CachingOptimized"
@@ -173,7 +173,7 @@ module "cloudfront" {
       allowed_methods = ["GET", "HEAD", "OPTIONS"]
       cached_methods  = ["GET", "HEAD", "OPTIONS"]
       compress        = true
-      
+
       use_forwarded_values = false
 
       cache_policy_name            = "Managed-CachingOptimized"

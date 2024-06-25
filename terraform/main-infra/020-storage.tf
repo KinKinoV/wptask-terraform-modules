@@ -15,7 +15,7 @@ data "aws_iam_policy" "cloudfront-access" {
 module "w3tc-user" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-user"
   version = "5.39.1"
-  
+
   name = "w3tc-access-user"
 
   create_iam_user_login_profile = false
@@ -29,11 +29,11 @@ data "aws_iam_policy_document" "w3tc-access" {
     sid = "W3TCAccess"
 
     principals {
-      type = "AWS"
-      identifiers = [ module.w3tc-user.iam_user_arn ]
+      type        = "AWS"
+      identifiers = [module.w3tc-user.iam_user_arn]
     }
 
-    actions = [ 
+    actions = [
       "s3:PutObject",
       "s3:GetObject",
     ]
@@ -50,22 +50,22 @@ data "aws_iam_policy_document" "w3tc-access" {
     sid = "AllowCloudFrontServicePrincipal"
 
     principals {
-      type = "Service"
-      identifiers = [ "cloudfront.amazonaws.com" ]
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
     }
 
-    actions = [ 
+    actions = [
       "s3:GetObject",
     ]
 
-    resources = [ 
+    resources = [
       "arn:aws:s3:::${var.environment}-${var.bucket_name}/*",
     ]
 
     condition {
-      test = "StringEquals"
+      test     = "StringEquals"
       variable = "AWS:SourceArn"
-      values = [ "${module.cloudfront.arn}" ]
+      values   = ["${module.cloudfront.arn}"]
     }
   }
 }

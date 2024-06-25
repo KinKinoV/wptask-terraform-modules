@@ -24,10 +24,10 @@ module "my-sql-rds" {
 
   skip_final_snapshot = true
   deletion_protection = false
-  
+
   parameters = [
     {
-      name = "skip_name_resolve"
+      name  = "skip_name_resolve"
       value = 1
     }
   ]
