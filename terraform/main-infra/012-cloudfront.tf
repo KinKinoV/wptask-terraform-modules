@@ -87,7 +87,7 @@ module "cloudfront" {
       "CloudFront-Forwarded-Proto"
     ]
     query_string              = true
-    cookies_forward           = true
+    cookies_forward           = "whitelist"
     cookies_whitelisted_names = ["comment_*", "wordpress_*", "wp-settings-*"]
 
     min_ttl     = 0
@@ -117,7 +117,7 @@ module "cloudfront" {
         "CloudFront-Forwarded-Proto"
       ]
       query_string    = true # Forward ALL
-      cookies_forward = true # Forward ALL
+      cookies_forward = "all" # Forward ALL
 
       min_ttl     = 0
       default_ttl = 0
@@ -143,7 +143,7 @@ module "cloudfront" {
         "CloudFront-Forwarded-Proto"
       ]
       query_string    = true # Forward ALL
-      cookies_forward = true # Forward ALL
+      cookies_forward = "all" # Forward ALL
 
       min_ttl     = 0
       default_ttl = 0
