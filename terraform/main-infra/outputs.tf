@@ -27,3 +27,13 @@ output "bastion_dns_name" {
   description = "Public DNS name for Bastion host"
   value = module.bastion.public_dns
 }
+
+output "w3tc_user_access_key_id" {
+  description = "ID of the Access Key for W3TC WordPress plugin"
+  value = module.w3tc-user.iam_access_key_id
+}
+
+output "w3tc_user_access_key_secret" {
+  description = "Secret of the Access Key for W3TC WordPress plugin"
+  value = module.w3tc-user.iam_access_key_secret
+}
