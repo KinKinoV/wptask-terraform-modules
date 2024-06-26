@@ -101,5 +101,8 @@ module "db-sg" {
     },
   ]
 
+  egress_cidr_blocks = ["0.0.0.0/0"]
+  egress_rules       = ["all-all"]
+
   tags = local.tags
 }
