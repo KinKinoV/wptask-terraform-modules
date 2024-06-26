@@ -16,6 +16,7 @@ module "my-sql-rds" {
   db_name  = "wpMysql"
   username = "wp_admin"
   password = var.db_password
+  manage_master_user_password = false
   port     = 3306
 
   multi_az               = true
